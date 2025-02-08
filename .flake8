@@ -1,0 +1,7 @@
+[flake8]
+ignore = A003,W503
+exclude = .run,.idea.git,__pycache__,__init__.py
+show-source = 1
+statistics = 1
+max-complexity = 15
+max-line-length = 200

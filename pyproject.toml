@@ -1,0 +1,11 @@
+[tool.black]
+line-length = 160
+include = '\.pyi?$'
+force-exclude = '''
+    ^/(
+        requirements.txt
+        | pyproject.toml
+        | __init__.py
+    )
+'''
+target-version = ["py311"]

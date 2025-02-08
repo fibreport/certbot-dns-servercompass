@@ -1,0 +1,45 @@
+name: certbot-dns-servercompass
+summary: Certbot DNS Plugin for servercompass.com
+description: |
+  certbot-dns-servercompass is a plugin for Certbot to perform dns-01
+  challenges against the servercompass.com DNS API
+base: core24
+confinement: strict
+grade: stable
+adopt-info: certbot-dns-servercompass
+platforms:
+  amd64:
+  arm64:
+  armhf:
+
+parts:
+  certbot-dns-servercompass:
+    plugin: python
+    source: .
+    override-pull: |
+        craftctl default
+        craftctl set version=$(grep '^version' "$SNAPCRAFT_PART_SRC/setup.py" | cut -f2 -d= | tr -d '"[:space:]"')
+    build-environment:
+      - SNAP_BUILD: "True"
+    # To build cryptography and cffi if needed
+    build-packages: [gcc, libffi-dev, libssl-dev, python3-dev]
+  certbot-metadata:
+    plugin: dump
+    source: .
+    stage: [setup.py, certbot-shared]
+    override-pull: |
+        craftctl default
+        mkdir -p $SNAPCRAFT_PART_SRC/certbot-shared
+
+slots:
+  certbot:
+    interface: content
+    content: certbot-1
+    read:
+      - $SNAP/lib/python3.12/site-packages
+
+plugs:
+  certbot-metadata:
+    interface: content
+    content: metadata-1
+    target: $SNAP/certbot-shared
